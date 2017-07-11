@@ -1,12 +1,16 @@
 # -*- coding: utf-8
+#
 # 思路：
 # 1. 设置 pdf 文件名，网页地址；Done
 # 2. 对 CNKI 的网址处理，获取“分章下载”按钮对应的 url，即得到书签页的网页地址；Done
 # 3. 利用爬虫获取书签页的所有文本（包括缩进信息）；Done
 # 4. 处理获取的书签文本，进行二次处理，参考“知网书签.bas”；Done
 # 5. 利用 pypdf2 和 pdfbookmarker 把处理之后的书签文本（含缩进）挂到 pdf 文件中。Done
-# 0. 可以借鉴油猴脚本直接获取 pdf 下载地址，并下载（curl or wget or aira2）。已下载到 “cnki_pdf_href_gen.js” 中。TODO
-
+#
+# TODO
+# 1. 可以借鉴油猴脚本直接获取 pdf 下载地址，并下载（curl or wget or aria2）。已下载到 “cnki_pdf_href_gen.js” 中。
+# 2. 现在如果只有第一个参数的话，是找到最近修改的文件，然后判断它是不是 pdf 的，后续可能需要改成找到最近的 pdf 文件，当然还要设定一定数量范围内。
+# 3. 封装一下，就不需要安装 python 和这么多 package 的。暂时可以安装 anaconda（建议） 或 Python 原版（原版需要安装很多 package）。
 
 
 import os
@@ -54,6 +58,24 @@ def getBookmarkUrl(url):
         match_list = bsObj.find_all('a', string="分章下载")
         # print(len(match_list))
         match_link = match_list[0].attrs["href"]
+        # print(match_link)
+    except AttributeError as e:
+        return None
+    return match_link
+
+def getPdfDownloadUrl(url):
+    try:
+        html = urlopen(url)
+    except HTTPError as e:
+        return None
+    try:
+        # bsObj = BeautifulSoup(html.read(), "html.parser")
+        bsObj = BeautifulSoup(html, "lxml")
+        # match_list = bsObj.find_all('a', string="CAJ下载")
+        match_list = bsObj.find_all('a', string="整本下载")
+        # print(len(match_list))
+        match_link = match_list[0].attrs["href"]
+        match_link = match_link.replace("nhdown", "pdfdown")
         # print(match_link)
     except AttributeError as e:
         return None

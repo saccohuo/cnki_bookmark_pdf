@@ -56,6 +56,7 @@ if ((pfType === true) & (pageType === false)) {
     }
 }
 
+// http://kns.cnki.net 对应的是这种情况
 if ((pfType === false) & (pageType === false)) {
     for (var i = 0; i < allLinks.snapshotLength; i++) {
         thisLink = allLinks.snapshotItem(i);
