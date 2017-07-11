@@ -1,11 +1,11 @@
 # -*- coding: utf-8
 # 思路：
-# 1. 设置 pdf 文件名，网页地址；
-# 2. 对 CNKI 的网址处理，获取“分章下载”按钮对应的 url，即得到书签页的网页地址；
-# 3. 利用爬虫获取书签页的所有文本（包括缩进信息）；
-# 4. 处理获取的书签文本，进行二次处理，参考“知网书签.bas”；
-# 5. 利用 pypdf2 和 pdfbookmarker 把处理之后的书签文本（含缩进）挂到 pdf 文件中。
-# 0. 如果有时间的话，可以借鉴油猴脚本直接获取 pdf 下载地址，并下载。
+# 1. 设置 pdf 文件名，网页地址；Done
+# 2. 对 CNKI 的网址处理，获取“分章下载”按钮对应的 url，即得到书签页的网页地址；Done
+# 3. 利用爬虫获取书签页的所有文本（包括缩进信息）；Done
+# 4. 处理获取的书签文本，进行二次处理，参考“知网书签.bas”；Done
+# 5. 利用 pypdf2 和 pdfbookmarker 把处理之后的书签文本（含缩进）挂到 pdf 文件中。Done
+# 0. 可以借鉴油猴脚本直接获取 pdf 下载地址，并下载（curl or wget or aira2）。已下载到 “cnki_pdf_href_gen.js” 中。TODO
 
 
 
@@ -123,8 +123,8 @@ def cnki_add_bookmark(pdfpath=None, pdffilename=None, paperurl=None):
 
 if __name__ == '__main__':
     import sys
-    print(len(sys.argv))
-    if len(sys.argv) not in (0, 1, 2, 3, 4):
+    # print(len(sys.argv))
+    if len(sys.argv) not in (1, 2, 3, 4):
         # sys.stderr.write(__doc__)
         sys.exit("Wrong number of arguments!")
     cnki_add_bookmark(*sys.argv[1:])
