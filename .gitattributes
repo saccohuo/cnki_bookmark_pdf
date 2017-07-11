@@ -1,0 +1,6 @@
+* text eol=lf
+*.exe binary
+*.pdf binary
+*.doc binary
+# *.doc diff=word
+# *.pdf diff=pdf
