@@ -11,6 +11,7 @@
 # 1. 可以借鉴油猴脚本直接获取 pdf 下载地址，并下载（curl or wget or aria2）。已下载到 “cnki_pdf_href_gen.js” 中。还是很有难度的。暂时用的 requests。
 # 2. 现在如果只有第一个参数的话，是找到最近修改的文件，然后判断它是不是 pdf 的，后续可能需要改成找到最近的 pdf 文件，当然还要设定一定数量范围内。
 # 3. 封装一下，就不需要安装 python 和这么多 package 的。暂时可以安装 anaconda（建议） 或 Python 原版（原版需要安装很多 package）。
+# 4. 解决参数中字符串形式的 Windows 路径最后的反斜杠被作为转义字符的问题。如“python cnki_bookmark_pdf.py "G:\IDMDownload\test_cnki\"”会导致最后的双引号被转义，出现识别错误。
 
 
 import os
@@ -154,6 +155,8 @@ def cnki_add_bookmark(pdffullpath=None, paperurl=None):
     if pdffilename == None:
         print("The recent downloaded file is not pdf.")
         return -1
+    # print(pdfpath)
+    # print(pdffilename)
     pdffilename_split = os.path.splitext(pdffilename)
     pdffilename_out = pdffilename_split[0]+'_out'+pdffilename_split[1]
     pdffile = os.path.join(pdfpath, pdffilename)
