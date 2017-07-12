@@ -8,7 +8,7 @@
 # 5. 利用 pypdf2 和 pdfbookmarker 把处理之后的书签文本（含缩进）挂到 pdf 文件中。Done
 #
 # TODO
-# 1. 可以借鉴油猴脚本直接获取 pdf 下载地址，并下载（curl or wget or aria2）。已下载到 “cnki_pdf_href_gen.js” 中。
+# 1. 可以借鉴油猴脚本直接获取 pdf 下载地址，并下载（curl or wget or aria2）。已下载到 “cnki_pdf_href_gen.js” 中。还是很有难度的。暂时用的 requests。
 # 2. 现在如果只有第一个参数的话，是找到最近修改的文件，然后判断它是不是 pdf 的，后续可能需要改成找到最近的 pdf 文件，当然还要设定一定数量范围内。
 # 3. 封装一下，就不需要安装 python 和这么多 package 的。暂时可以安装 anaconda（建议） 或 Python 原版（原版需要安装很多 package）。
 
@@ -40,12 +40,13 @@ def getCopyText():
 
 def getRecentUpdateFile(base_dir):
     allfile = os.listdir(base_dir)
-    allfile.sort(key=lambda fn: os.path.getmtime(base_dir+fn) if not os.path.isdir(base_dir+fn) else 0)
+    allfile.sort(key=lambda fn: os.path.getmtime(os.path.join(base_dir, fn)) if not os.path.isdir(os.path.join(base_dir, fn)) else 0)
     recentfile = allfile[-1]
     if os.path.splitext(recentfile)[1]=='.pdf':
         return recentfile
     else:
         return None
+    return -1
 
 def getBookmarkUrl(url):
     try:
@@ -81,30 +82,11 @@ def getPdfDownloadUrl(url):
         return None
     return match_link
 
-def cnki_add_bookmark(pdfpath=None, pdffilename=None, paperurl=None):
-    if pdfpath == None:
-        pdfpath = 'G:/IDMDownload/'
-    if pdffilename == None:
-        pdffilename = getRecentUpdateFile(pdfpath)
-    if pdffilename == None:
-        print("The recent downloaded file is not pdf.")
-        return
-    pdffilename_split = os.path.splitext(pdffilename)
-    pdffilename_out = pdffilename_split[0]+'_out'+pdffilename_split[1]
-    pdffile = os.path.join(pdfpath, pdffilename)
-    pdffile_out = os.path.join(pdfpath, pdffilename_out)
-    if paperurl == None:
-        paperurl = getCopyText().decode('utf-8')
-    if urlmatch(paperurl, rule='IRI') == None:
-        print("The text in clipboard is not a valid url.")
-        return
-    bookmarkfilename = pdffilename_split[0]+'_bookmark.txt'
-    bookmarkfile = os.path.join(pdfpath, bookmarkfilename)
-
+def cnki_get_bookmark(bookmarkfile, paperurl):
     bookmarkurl = getBookmarkUrl(paperurl)
     if bookmarkurl == None:
-        print("Bookmark url could not be found.")
-        return
+        print("Bookmark page on CNKI could not be found.")
+        return -1
 
     html = urlopen(bookmarkurl).read()
     soup = BeautifulSoup(html, 'html.parser')
@@ -140,13 +122,65 @@ def cnki_add_bookmark(pdfpath=None, pdffilename=None, paperurl=None):
     # print(fp.encoding)
     fp.write(content)
     fp.close()
+    return 0
+
+
+def cnki_add_bookmark(pdffullpath=None, paperurl=None):
+    defaultpath = 'G:/IDMDownload/'
+    # defaultpath = os.getcwd()
+    if pdffullpath == None or pdffullpath == '':
+        pdfpath = defaultpath
+        pdffilename = getRecentUpdateFile(pdfpath)
+    elif os.path.isdir(pdffullpath):
+        pdfpath = pdffullpath
+        pdffilename = getRecentUpdateFile(pdfpath)
+    else:
+        curpdfpath = os.path.dirname(pdffullpath)
+        curpdffilename = os.path.basename(pdffullpath)
+        curpdffileext = os.path.splitext(curpdffilename)[1]
+        if curpdfpath != '' and os.path.isdir(curpdfpath) == False:
+            print("The specified path doesn't exist.")
+            return -1
+        else:
+            if curpdfpath != '' and os.path.isdir(curpdfpath) == True:
+                pdfpath = curpdfpath
+            else:
+                pdfpath = defaultpath
+            if curpdffilename == '':
+                pdffilename = getRecentUpdateFile(pdfpath)
+            else:
+                pdffilename = curpdffilename
+
+    if pdffilename == None:
+        print("The recent downloaded file is not pdf.")
+        return -1
+    pdffilename_split = os.path.splitext(pdffilename)
+    pdffilename_out = pdffilename_split[0]+'_out'+pdffilename_split[1]
+    pdffile = os.path.join(pdfpath, pdffilename)
+    pdffile_out = os.path.join(pdfpath, pdffilename_out)
+    if os.path.isfile(pdffile) == False:
+        print("The specified file doesn't exist.")
+        return -1
+    if paperurl == None:
+        paperurl = getCopyText().decode('utf-8')
+    if urlmatch(paperurl, rule='IRI') == None:
+        print("The text in clipboard is not a valid url.")
+        return -1
+    bookmarkfilename = pdffilename_split[0]+'_bookmark.txt'
+    bookmarkfile = os.path.join(pdfpath, bookmarkfilename)
+
+    get_bookmark_flag = cnki_get_bookmark(bookmarkfile, paperurl)
+    if get_bookmark_flag==-1:
+        return -1
     add_bookmarks.run_script(pdffile, bookmarkfile, pdffile_out)
-    return
+    if os.path.isfile(bookmarkfile):
+        os.remove(bookmarkfile)
+    return 0
 
 if __name__ == '__main__':
     import sys
     # print(len(sys.argv))
-    if len(sys.argv) not in (1, 2, 3, 4):
+    if len(sys.argv) not in (1, 2, 3):
         # sys.stderr.write(__doc__)
         sys.exit("Wrong number of arguments!")
     cnki_add_bookmark(*sys.argv[1:])
