@@ -1,10 +1,11 @@
 * cnki_bookmark_pdf
 ** 基本环境
-- Python 3
+- Python 3。对于 Windows 系统，要求 python 相关路径已被添加到环境变量中。
 - Chrome
 - Tampermonkey（Chrome 插件）
 - CNKI 中国知网 PDF 全文下载（Tampermonkey 脚本）
 - [[http://www.cnki.net/][知网新平台]]
+- 从知网下载 pdf 文件到某目录。具体下载方法见[[http://blog.yuelong.info/post/cnki-pdf-js.html][CNKI PDF 全文下载用户脚本 | YUE's Notes]]。
 - 可选：AutoHotkey
 ** 使用方法（TLDR 版）
 多种使用方法，对应不同需求。
@@ -52,10 +53,6 @@ python $(dirname $(readlink -f ${BASH_SOURCE[0]}))\\cnki_bookmark_pdf.py "<path_
 
 此时，只需按全局快捷键 Alt+Win+C，即可实现相应功能。可以自行修改快捷键。
 ** 第一种使用方法的完整版
-从知网下载 pdf 文件到某目录。具体下载方法见[[http://blog.yuelong.info/post/cnki-pdf-js.html][CNKI PDF 全文下载用户脚本 | YUE's Notes]]。
-
-对于 Windows 系统，要求 python 相关路径已被添加到环境变量中。
-
 在命令行中，执行下面命令，即可自动添加书签到下载得到的 pdf 文件中。
 
 #+BEGIN_SRC python
