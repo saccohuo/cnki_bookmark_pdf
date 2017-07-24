@@ -1,11 +1,56 @@
 * cnki_bookmark_pdf
-** 环境
+** 基本环境
 - Python 3
 - Chrome
 - Tampermonkey（Chrome 插件）
 - CNKI 中国知网 PDF 全文下载（Tampermonkey 脚本）
 - [[http://www.cnki.net/][知网新平台]]
-** 使用方法
+** 使用方法（TLDR 版）
+多种使用方法，对应不同需求。
+
+以下部分的所有代码中， =<path_to_the_script>= 是 =cnki_bookmark_pdf.py= 脚本所在的目录路径， =<path_to_the_pdf>= 是下载到的 pdf 所在的文件目录， =<pdf_filename>= 是下载到的 pdf 的文件名（带后缀）， =<url_of_cnki_paper>= 是当前论文的知网页面的网址，从浏览器地址栏复制即可。
+
+*** 愿意自己输入 pdf 文件名
+也可以把最后的 ="<url_of_cnki_paper>"= 去掉，直接把 url 复制到剪贴板。
+
+#+BEGIN_SRC python
+python "<path_to_the_script>/cnki_bookmark_pdf.py" "<path_to_the_pdf>/<pdf_filename>" "<url_of_cnki_paper>"
+#+END_SRC
+*** 懒得自己输入 pdf 文件名
+要求下载的 pdf 文件是其所在目录中最新的文件。也可以把最后的 ="<url_of_cnki_paper>"= 去掉，直接把 url 复制到剪贴板。
+
+#+BEGIN_SRC python
+python "<path_to_the_script>/cnki_bookmark_pdf.py" "<path_to_the_pdf>" "<url_of_cnki_paper>"
+#+END_SRC
+*** 下载目录固定，懒得自己输入 pdf 文件名和脚本路径
+使用时，要求基本上所有下载论文的 pdf 文件都放在同一目录，且下载的 pdf 文件是其所在目录中最新的文件。且知网文章页面的 url 复制到剪贴板中。
+
+在脚本所在目录新建文件 =run_cnki.sh= ，输入以下内容：
+#+BEGIN_SRC sh
+#!/bin/bash
+python $(dirname $(readlink -f ${BASH_SOURCE[0]}))\\cnki_bookmark_pdf.py "<path_to_the_pdf>"
+#+END_SRC
+
+然后把 =run_cnki.sh= 文件的快捷方式放到桌面上，需要使用的时候点击一下即可。
+*** 下载目录固定，懒得自己输入 pdf 文件名和脚本路径，鼠标也懒得点
+要求安装 AutoHotkey，且自己会用 AutoHotkey 的基本功能。
+
+使用时，要求基本上所有下载论文的 pdf 文件都放在同一目录，且下载的 pdf 文件是其所在目录中最新的文件。且知网文章页面的 url 复制到剪贴板中。
+
+在 .ahk 文件中添加以下内容。
+
+#+BEGIN_SRC
+#!c::
+  Run, python cnki_bookmark_pdf.py "<path_to_the_pdf>", <path_to_the_script>, Hide UseErrorLevel
+  if ErrorLevel = ERROR
+    MsgBox The python script could not be executed.
+  return
+#+END_SRC
+
+运行 ahk 文件。
+
+此时，只需按全局快捷键 Alt+Win+C，即可实现相应功能。可以自行修改快捷键。
+** 第一种使用方法的完整版
 从知网下载 pdf 文件到某目录。具体下载方法见[[http://blog.yuelong.info/post/cnki-pdf-js.html][CNKI PDF 全文下载用户脚本 | YUE's Notes]]。
 
 对于 Windows 系统，要求 python 相关路径已被添加到环境变量中。
@@ -13,10 +58,8 @@
 在命令行中，执行下面命令，即可自动添加书签到下载得到的 pdf 文件中。
 
 #+BEGIN_SRC python
-python "<path_to_the_script>/cnki_bookmark_pdf.py" "<path_to_the_pdf>" "<url_of_cnki_paper>"
+python "<path_to_the_script>/cnki_bookmark_pdf.py" "<path_to_the_pdf>/<pdf_filename>" "<url_of_cnki_paper>"
 #+END_SRC
-
-其中， =<path_to_the_script>= 是 =cnki_bookmark_pdf.py= 脚本所在的目录路径， =<path_to_the_pdf>= 是下载到的 pdf 的文件目录和文件名组成的路径， =<url_of_cnki_paper>= 是当前论文的知网页面的网址，从浏览器地址栏复制即可。
 
 例如，我的脚本所在路径是 =D:\MyDocuments\MyGitProject\cnki_bookmark_pdf\= ，下载的 pdf 文件存放在 =G:\IDMDownload\= ，下载的 pdf 文件名是 =测试用的文件.pdf= ，知网的页面地址是 ~http://kns.cnki.net/KCMS/detail/detail.aspx?dbcode=CMFD&dbname=CMFD201502&filename=1015609600.nh&uid=WEEvREcwSlJHSldRa1Fhb09jMjQxYzJycnE2eURtQWMzREdKZ010ZjlWND0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!&v=Mjg4NTFyRnl2Z1dydkxWRjI2RzdXNEY5Zk1yNUViUElSOGVYMUx1eFlTN0RoMVQzcVRyV00xRnJDVVJMMmZZT1I=~ ，那么我需要执行的命令如下。
 
@@ -27,7 +70,7 @@ python "D:/MyDocuments/MyGitProject/cnki_bookmark_pdf/cnki_bookmark_pdf.py" "G:/
 对于 Windows 系统，命令行中可能不允许出现这么长的命令，这时可以直接把知网文章的 url 复制到剪贴板中，然后执行下面命令。
 
 #+BEGIN_SRC python
-python "<path_to_the_script>/cnki_bookmark_pdf.py" "<path_to_the_pdf>"
+python "<path_to_the_script>/cnki_bookmark_pdf.py" "<path_to_the_pdf>/<pdf_filename>"
 #+END_SRC
 
 例如，对于我的场景，需要做的就是把文章 url 复制到剪贴板，然后执行下面的命令。
