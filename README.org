@@ -1,4 +1,8 @@
 * cnki_bookmark_pdf
+** 功能
+为从知网下载的学位论文快速挂上书签。
+
+后续考虑独立从知网下载 pdf，然后自动挂上书签。
 ** 基本环境
 - Python 3。对于 Windows 系统，要求 python 相关路径已被添加到环境变量中。
 - Chrome
