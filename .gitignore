@@ -2,3 +2,5 @@
 /__pycache__/
 cnki_pdf_download.py
 *.bkp
+run.sh
+*.js
