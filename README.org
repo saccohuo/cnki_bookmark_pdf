@@ -10,7 +10,7 @@
 ** 使用方法（TLDR 版）
 多种使用方法，对应不同需求。
 
-以下部分的所有代码中， =<path_to_the_script>= 是 =cnki_bookmark_pdf.py= 脚本所在的目录路径， =<path_to_the_pdf>= 是下载到的 pdf 所在的文件目录， =<pdf_filename>= 是下载到的 pdf 的文件名（带后缀）， =<url_of_cnki_paper>= 是当前论文的知网页面的网址，从浏览器地址栏复制即可。
+以下部分的所有代码中， =<path_to_the_script>= 是 =cnki_bookmark_pdf.py= 脚本所在的目录路径， =<path_to_the_pdf>= 是下载到的 pdf 所在的文件目录（不能以反斜杠结尾）， =<pdf_filename>= 是下载到的 pdf 的文件名（带后缀）， =<url_of_cnki_paper>= 是当前论文的知网页面的网址，从浏览器地址栏复制即可。所有本地路径的连接符可以使用斜杠，也可以使用反斜杠，但若使用反斜杠，路径结尾的反斜杠连接符必须省略。
 
 *** 愿意自己输入 pdf 文件名
 也可以把最后的 "<url_of_cnki_paper>" 去掉，直接把 url 复制到剪贴板。
