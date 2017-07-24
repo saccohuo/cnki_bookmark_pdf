@@ -11,13 +11,13 @@
 以下部分的所有代码中， =<path_to_the_script>= 是 =cnki_bookmark_pdf.py= 脚本所在的目录路径， =<path_to_the_pdf>= 是下载到的 pdf 所在的文件目录， =<pdf_filename>= 是下载到的 pdf 的文件名（带后缀）， =<url_of_cnki_paper>= 是当前论文的知网页面的网址，从浏览器地址栏复制即可。
 
 *** 愿意自己输入 pdf 文件名
-也可以把最后的 ="<url_of_cnki_paper>"= 去掉，直接把 url 复制到剪贴板。
+也可以把最后的 ~"<url_of_cnki_paper>"~ 去掉，直接把 url 复制到剪贴板。
 
 #+BEGIN_SRC python
 python "<path_to_the_script>/cnki_bookmark_pdf.py" "<path_to_the_pdf>/<pdf_filename>" "<url_of_cnki_paper>"
 #+END_SRC
 *** 懒得自己输入 pdf 文件名
-要求下载的 pdf 文件是其所在目录中最新的文件。也可以把最后的 ="<url_of_cnki_paper>"= 去掉，直接把 url 复制到剪贴板。
+要求下载的 pdf 文件是其所在目录中最新的文件。也可以把最后的 ~"<url_of_cnki_paper>"~ 去掉，直接把 url 复制到剪贴板。
 
 #+BEGIN_SRC python
 python "<path_to_the_script>/cnki_bookmark_pdf.py" "<path_to_the_pdf>" "<url_of_cnki_paper>"
