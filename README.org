@@ -5,6 +5,7 @@
 - Tampermonkey（Chrome 插件）
 - CNKI 中国知网 PDF 全文下载（Tampermonkey 脚本）
 - [[http://www.cnki.net/][知网新平台]]
+- 可选：AutoHotkey
 ** 使用方法（TLDR 版）
 多种使用方法，对应不同需求。
 
@@ -37,7 +38,7 @@ python $(dirname $(readlink -f ${BASH_SOURCE[0]}))\\cnki_bookmark_pdf.py "<path_
 
 使用时，要求基本上所有下载论文的 pdf 文件都放在同一目录，且下载的 pdf 文件是其所在目录中最新的文件。且知网文章页面的 url 复制到剪贴板中。
 
-在 .ahk 文件中添加以下内容。
+在 =.ahk= 文件中添加以下内容。
 
 #+BEGIN_SRC
 #!c::
