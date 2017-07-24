@@ -1,11 +1,12 @@
-* 环境
+* cnki_bookmark_pdf
+** 环境
 - Python 3
 - Chrome
 - Tampermonkey（Chrome 插件）
 - CNKI 中国知网 PDF 全文下载（Tampermonkey 脚本）
 - [[http://www.cnki.net/][知网新平台]]
-* 使用方法
-从知网下载 pdf 文件到某目录。具体下载方法见 [[tempermonkey-script-introduction][这里]]。
+** 使用方法
+从知网下载 pdf 文件到某目录。具体下载方法见[[http://blog.yuelong.info/post/cnki-pdf-js.html][CNKI PDF 全文下载用户脚本 | YUE's Notes]]。
 
 对于 Windows 系统，要求 python 相关路径已被添加到环境变量中。
 
@@ -34,6 +35,8 @@ python "<path_to_the_script>/cnki_bookmark_pdf.py" "<path_to_the_pdf>"
 #+BEGIN_SRC python
 python "D:/MyDocuments/MyGitProject/cnki_bookmark_pdf/cnki_bookmark_pdf.py" "G:/IDMDownload/测试用的文件.pdf"
 #+END_SRC
-* 参考
-- <<tempermonkey-script-introduction>>[[http://blog.yuelong.info/post/cnki-pdf-js.html][CNKI PDF 全文下载用户脚本 | YUE's Notes]]
-- <<tempermonkey-script-download>>[[https://greasyfork.org/zh-CN/scripts/18841-cnki-%E4%B8%AD%E5%9B%BD%E7%9F%A5%E7%BD%91-pdf-%E5%85%A8%E6%96%87%E4%B8%8B%E8%BD%BD][CNKI 中国知网 PDF 全文下载]]
+
+运行结束后，在 pdf 存放的文件夹会出现原 pdf 文件名加“_out”的 pdf 文件。如对于我的场景，得到的文件名就是“测试用的文件_out.pdf”。
+** 参考
+- [[http://blog.yuelong.info/post/cnki-pdf-js.html][CNKI PDF 全文下载用户脚本 | YUE's Notes]]
+- [[https://greasyfork.org/zh-CN/scripts/18841-cnki-%E4%B8%AD%E5%9B%BD%E7%9F%A5%E7%BD%91-pdf-%E5%85%A8%E6%96%87%E4%B8%8B%E8%BD%BD][CNKI 中国知网 PDF 全文下载]]
